@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Diwali Wordle</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="sp"></div>
+      <h1>वर्डल</h1>
+      <div class="ic">
+        <button class="ib" id="bs" aria-label="Statistics">▥</button
+        ><button class="ib" id="bt" aria-label="Toggle theme"></button>
+      </div>
+    </header>
+    <div id="sub">New word in <b id="tm">10:00</b></div>
+    <main><div id="board"></div></main>
+    <div id="kb"></div>
+    <div id="toasts"></div>
+    <div id="modal" hidden>
+      <div class="card">
+        <button class="ib x" id="bx" aria-label="Close">✕</button>
+        <h2 id="mt">Statistics</h2>
+        <div class="ans" id="ma" hidden></div>
+        <div class="nums" id="mn"></div>
+        <div class="dist" id="md"></div>
+        <div class="next">Next word in<b id="mtm">10:00</b></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
