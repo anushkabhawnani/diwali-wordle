@@ -414,7 +414,7 @@ function buildShareText() {
     location.protocol === "https:"
       ? `\n\n${location.origin}${location.pathname}`
       : "";
-  return `🪔 वर्डल 🪔\n${score}/${MAX_GUESSES}\n\n${grid}${link}`;
+  return `🪔 वर्डल 🪔\n${score}/${MAX_GUESSES}\n\n${grid}`;
 }
 
 async function shareResult() {
