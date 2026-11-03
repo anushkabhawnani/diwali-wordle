@@ -364,6 +364,7 @@ function showModal(gameJustEnded) {
     })
     .join("");
 
+  $("bsh").hidden = !game.done; // Share only appears once the game is over
   $("modal").hidden = false;
 }
 
@@ -390,6 +391,60 @@ $("bt").onclick = () => {
     : matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = isDark ? "light" : "dark";
 };
+
+// ---------- Sharing your result ----------
+// Builds text like:  Wordle 10-Min · 4 Nov, 8:40 PM / 3/6 / emoji grid
+function buildShareText() {
+  const emoji = { correct: "💚", present: "🩷", absent: "🖤" };
+  const startedAt = new Date(currentSlot * SLOT_MS).toLocaleString([], {
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const score = game.won ? game.guesses.length : "X";
+  const grid = game.guesses
+    .map((guess) =>
+      gradeGuess(guess)
+        .map((state) => emoji[state])
+        .join(""),
+    )
+    .join("\n");
+  const link =
+    location.protocol === "https:"
+      ? `\n\n${location.origin}${location.pathname}`
+      : "";
+  return `🪔 वर्डल 🪔\n${score}/${MAX_GUESSES}\n\n${grid}${link}`;
+}
+
+async function shareResult() {
+  const text = buildShareText();
+  try {
+    // Phones get the native share sheet, desktops copy to the clipboard
+    if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
+      await navigator.share({ text });
+      return;
+    }
+    await navigator.clipboard.writeText(text);
+    showToast("Copied results to clipboard");
+  } catch (error) {
+    if (error.name === "AbortError") return; // the person closed the share sheet
+    // Older browsers: copy through a temporary text box
+    const box = document.createElement("textarea");
+    box.value = text;
+    document.body.appendChild(box);
+    box.select();
+    try {
+      document.execCommand("copy");
+      showToast("Copied results to clipboard");
+    } catch (copyError) {
+      showToast("Couldn’t copy. Please copy it manually.");
+    }
+    box.remove();
+  }
+}
+
+$("bsh").onclick = shareResult;
 
 // ---------- Clock: countdown and 10-minute rollover ----------
 setInterval(() => {
