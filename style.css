@@ -351,3 +351,13 @@ main {
   padding: 14px 40px;
   cursor: pointer;
 }
+
+html,
+body,
+.k {
+  touch-action: manipulation; /* stops double-tap zoom */
+}
+
+body {
+  -webkit-touch-callout: none; /* no long-press popup menu */
+}
