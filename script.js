@@ -392,6 +392,9 @@ $("bt").onclick = () => {
   root.dataset.theme = isDark ? "light" : "dark";
 };
 
+// Stop pinch-zooming on iOS
+document.addEventListener("gesturestart", (event) => event.preventDefault());
+
 // ---------- Sharing your result ----------
 // Builds text like:  Wordle 10-Min · 4 Nov, 8:40 PM / 3/6 / emoji grid
 function buildShareText() {
